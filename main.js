@@ -107,9 +107,19 @@ $( document ).ready(function() {
 	  onDrop: onDrop,
 	  onSnapEnd: onSnapEnd
 	};
-	board = ChessBoard('board', cfg);
+	//board = ChessBoard('board', cfg);
 
 	updateStatus();
+
+	$('#newChessGame').click(function(){
+	    console.log("starting!");
+
+		game = new Chess();
+		board = ChessBoard('board', cfg);
+
+		updateStatus();
+
+	});
 
 
 });
