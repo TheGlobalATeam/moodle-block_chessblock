@@ -4,15 +4,12 @@ require_once($CFG->libdir . '/pagelib.php');
 
 class block_chessblock extends block_base {
 
-		private $jsLoaded = false;
+	private $jsLoaded = false;
 
-		public function init() {
+	public function init() {
 		GLOBAL $PAGE;
 
 		$this->title = get_string('chessblock', 'block_chessblock');
-
-
-
 
 	}
 
@@ -23,8 +20,6 @@ class block_chessblock extends block_base {
 	public function get_content() {
 
 		global $CFG, $OUTPUT, $USER, $DB, $PAGE;
-
-
 
 		if ($this->content !== null) {
 			return $this->content;
