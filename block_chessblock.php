@@ -24,11 +24,7 @@ class block_chessblock extends block_base {
 
         global $CFG, $OUTPUT, $USER, $DB, $PAGE;
 
-		//loading js file, while preventing moodle catching. probably a better way somewhere...
-		if(!$this->jsLoaded){
-			$this->jsLoaded = true;
-			$PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
-		}
+
 
         if ($this->content !== null) {
           return $this->content;
@@ -39,9 +35,16 @@ class block_chessblock extends block_base {
 
         //first element with no .=, just =
         $this->content->text .= "<h2>Chess!</h2>";
+		$this->content->text .= '<div id="board" style="width: 300px"></div>';
+		$this->content->text .= '<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>';
 
-
-
+		//loading js file, while preventing moodle catching. probably a better way somewhere...
+		if(!$this->jsLoaded){
+			$this->jsLoaded = true;
+			$PAGE->requires->css('/blocks/chessblock/chessboardjs/css/chessboard-0.3.0.css?'.rand());
+			$PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chessboard-0.3.0.js?'.rand());
+			$PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
+		}
 
         $this->content->footer = 'The end of my chess block';
 
