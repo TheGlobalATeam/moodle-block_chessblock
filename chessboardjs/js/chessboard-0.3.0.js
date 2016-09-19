@@ -442,7 +442,8 @@ function expandConfig() {
   if (cfg.hasOwnProperty('pieceTheme') !== true ||
       (typeof cfg.pieceTheme !== 'string' &&
        typeof cfg.pieceTheme !== 'function')) {
-    cfg.pieceTheme = 'img/chesspieces/wikipedia/{piece}.png';
+    //DIRTY fix due to moodle pathing... 
+    cfg.pieceTheme = '/moodle/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png';
   }
 
   // animation speeds
