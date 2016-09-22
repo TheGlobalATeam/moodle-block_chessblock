@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/chessblock/db" VERSION="20160920" COMMENT="XMLDB file for Moodle blocks/chessblock"
+<XMLDB PATH="blocks/chessblock/db" VERSION="20160922" COMMENT="XMLDB file for Moodle blocks/chessblock"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -19,6 +19,28 @@
         <FIELD NAME="game_pgn" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="for game pgn values"/>
         <FIELD NAME="user_id" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="id of playing user"/>
         <FIELD NAME="player_color" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="0 = white, 1 = black"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_chessblock_games" COMMENT="Each row corresponds to a finished game.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="pgn" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="All game moves"/>
+        <FIELD NAME="whiteid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Whites player id"/>
+        <FIELD NAME="blackid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Blacks player id"/>
+        <FIELD NAME="currentstateid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="The games current state id. Referencing to the id of block_chessblock_states."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_chessblock_states" COMMENT="Each row represent a state in a game.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="gameid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the finished game. Referencing the id from block_chessblock_games."/>
+        <FIELD NAME="fen" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Game state in FEN notation"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
