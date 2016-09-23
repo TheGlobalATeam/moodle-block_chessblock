@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/chessblock/db" VERSION="20160920" COMMENT="XMLDB file for Moodle blocks/chessblock"
+<XMLDB PATH="blocks/chessblock/db" VERSION="20160923" COMMENT="XMLDB file for Moodle blocks/chessblock"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -12,13 +12,13 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_chessblock_positions" COMMENT="for saving positions in FEN and PGN">
+    <TABLE NAME="block_chessblock_games" COMMENT="Each row corresponds to a game of chess">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="game_fen" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="fen value for game"/>
         <FIELD NAME="game_pgn" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="for game pgn values"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="id of playing user"/>
-        <FIELD NAME="player_color" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="0 = white, 1 = black"/>
+        <FIELD NAME="black_user_id" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="white_user_id" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
