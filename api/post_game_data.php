@@ -7,9 +7,9 @@ https://github.com/trampgeek/moodle-qtype_coderunner/blob/master/ajax.php
 define('AJAX_SCRIPT', true);
 require('../../../config.php');
 
-//require_login();
-//$userID = $USER->id;
-$userID = 2;
+require_login();
+$userID = $USER->id;
+//$userID = 2;
 
 $returnObject = array();
 
