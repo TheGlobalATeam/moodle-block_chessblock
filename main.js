@@ -103,6 +103,18 @@ $( document ).ready(function() {
 		game = new Chess();
 		board = ChessBoard('board', cfg);
 
+		// Example code to get information from api
+		// Y.io(
+		// 	M.cfg.wwwroot + "/blocks/chessblock/api/get_pgn.php", {
+		// 		method: "GET",
+		// 		on: {
+		// 			success: function(io, o, arguments) {
+		// 				console.log(o.responseText)
+		// 			}
+		// 		}
+		// 	}
+		// );
+
 		updateStatus();
 	});
 });
