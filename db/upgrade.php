@@ -8,7 +8,7 @@ function xmldb_block_chessblock_upgrade($oldversion) {
     // loads ddl manager and xmldb classes
 	$dbman = $DB->get_manager();
 
-	if ($oldversion < 2016092304) {
+	if ($oldversion < 2016092305) {
 
         // Drop unused tables
         $table = new xmldb_table('block_chessblock_positions');
@@ -44,7 +44,7 @@ function xmldb_block_chessblock_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        upgrade_block_savepoint(true, 2016092304, 'chessblock');
+        upgrade_block_savepoint(true, 2016092305, 'chessblock');
     }
 	return $result;
 }

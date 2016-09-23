@@ -1,5 +1,5 @@
 <?php
-$plugin->version = 2016092304;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version = 2016092305;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires = 2013040500;        // Requires this Moodle version
 $plugin->release = '1.0';
 
