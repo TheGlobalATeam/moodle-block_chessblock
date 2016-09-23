@@ -47,7 +47,7 @@ class block_chessblock extends block_base {
 		}
 
 		//$insIRD = $this->insertTestRecord();
-		//$fen3 = $this->retriveTestRecordFen(3);
+		//$fen = $this->retriveTestRecordFen(1);
 
 		//$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
 
