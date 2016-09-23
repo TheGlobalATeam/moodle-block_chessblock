@@ -21,10 +21,11 @@ $( document ).ready(function() {
 		// }
 
 		//only white may move, on their turn
-		if (game.in_checkmate() === true || game.in_draw() === true || piece.search(/^b/) !== -1) {
-				return false;
+		if (game.in_checkmate() === true ||
+			game.in_draw() === true ||
+			piece.search(/^b/) !== -1) {
+			return false;
 		}
-
 	};
 
 	var onDrop = function(source, target) {
@@ -39,7 +40,6 @@ $( document ).ready(function() {
 		if (move === null) return 'snapback';
 
 		updateStatus();
-
 		window.setTimeout(makeRandomMove, 250);
 	};
 
@@ -63,41 +63,27 @@ $( document ).ready(function() {
 
 	var updateStatus = function() {
 		var status = '';
-
 		var moveColor = 'White';
+
 		if (game.turn() === 'b') {
-
 			moveColor = 'Black';
-
-		}if (game.in_checkmate() === true) {
-
+		} if (game.in_checkmate() === true) {
 			// checkmate
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
-
-		}else if (game.in_draw() === true) {
+		} else if (game.in_draw() === true) {
 			// draw?
-
 			status = 'Game over, drawn position';
-
-		}else {
+		} else {
 			// game still on
-
 			status = moveColor + ' to move';
-
 			// check?
 			if (game.in_check() === true) {
-
 				status += ', ' + moveColor + ' is in check';
-
 			}
 		}
-
 		statusEl.html(status);
 		fenEl.html(game.fen());
 		pgnEl.html(game.pgn());
-
-
-
 	};
 
 	var cfg = {
@@ -105,9 +91,9 @@ $( document ).ready(function() {
 	  position: 'start',
 	  onDragStart: onDragStart,
 	  onDrop: onDrop,
-	  onSnapEnd: onSnapEnd
+	  onSnapEnd: onSnapEnd,
+	  pieceTheme: M.cfg.wwwroot + '/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
 	};
-	//board = ChessBoard('board', cfg);
 
 	updateStatus();
 
@@ -118,8 +104,5 @@ $( document ).ready(function() {
 		board = ChessBoard('board', cfg);
 
 		updateStatus();
-
 	});
-
-
 });
