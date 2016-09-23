@@ -17,6 +17,9 @@ $result = $DB->get_records($table, array(
 	'black_user_id' => -1
 ));
 
+header('Content-Type: text/html; charset=utf-8');
+//var_dump($result);
+
 $returnObject = array();
 
 if(count($result) == 0){
@@ -27,12 +30,12 @@ if(count($result) == 0){
 	$returnObject['status'] = true;
 
 	$ids = array_keys($result);
-	arsort($ids);
+	rsort($ids);
 	$returnObject['gameData'] = $result[$ids[0]];
 }
 
 
-header("Content-Type: application/json; charset=UTF-8");
+//header("Content-Type: application/json; charset=UTF-8");
 //header('Access-Control-Allow-Origin: *');
 $jsonData = $returnObject;
 echo json_encode($jsonData, JSON_PRETTY_PRINT);
