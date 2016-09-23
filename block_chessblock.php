@@ -46,12 +46,10 @@ class block_chessblock extends block_base {
 			$PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
 		}
 
-		$insIRD = $this->insertTestRecord();
-		$fen3 = $this->retriveTestRecordFen(3);
+		//$insIRD = $this->insertTestRecord();
+		//$fen3 = $this->retriveTestRecordFen(3);
 
-		$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
-
-
+		//$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
 
 		return $this->content;
 
@@ -61,34 +59,29 @@ class block_chessblock extends block_base {
 	//https://docs.moodle.org/dev/Data_manipulation_API#Inserting_Records
 
 	//insert new row
-	private function insertTestRecord(){
+    private function insertTestRecord() {
 
-		global $CFG, $OUTPUT, $USER, $DB, $PAGE;
+        global $CFG, $OUTPUT, $USER, $DB, $PAGE;
 
-		$table = 'block_chessblock_positions';
+        $table = 'block_chessblock_games';
 
-		$record = new stdClass();
-		$record->game_fen  = 'YOLO';
-		$record->game_pgn = 'SWAG';
-		$record->user_id = '1337';
-		$record->player_color = '0';
-		$status = $DB->insert_record($table, $record, false);
-		return $status;
+        $record = new stdClass();
+        $record->game_fen  = 'FEN';
+        $record->game_pgn = 'PGN';
+        $record->white_user_id = '10';
+        $record->black_user_id = '11';
+        $status = $DB->insert_record($table, $record, false);
+        return $status;
+    }
 
-	}
+    // Pulling all records that fit parms
+    private function retriveTestRecordFen($index) {
 
-	//pulling all records that fit parms
-	private function retriveTestRecordFen($index){
+        global $CFG, $OUTPUT, $USER, $DB, $PAGE;
 
-		global $CFG, $OUTPUT, $USER, $DB, $PAGE;
+        $table = 'block_chessblock_games';
+        $result = $DB->get_records($table, array('white_user_id' => '10', 'id' => $index));
 
-		$table = 'block_chessblock_positions';
-		$result = $DB->get_records($table, array('user_id'=>'1337', 'id' => $index));
-
-	//	var_dump($result[$index]);
-
-
-		return $result[$index]->game_fen;
-
-	}
+        return $result[$index]->game_fen;
+    }
 }
