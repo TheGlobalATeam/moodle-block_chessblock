@@ -105,7 +105,8 @@ $( document ).ready(function() {
 	  position: 'start',
 	  onDragStart: onDragStart,
 	  onDrop: onDrop,
-	  onSnapEnd: onSnapEnd
+	  onSnapEnd: onSnapEnd,
+	  pieceTheme: '/moodle/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
 	};
 	//board = ChessBoard('board', cfg);
 
