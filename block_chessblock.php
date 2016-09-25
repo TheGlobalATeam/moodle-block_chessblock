@@ -32,6 +32,7 @@ class block_chessblock extends block_base {
 		$this->content->text .= "<h2>Chess!</h2>";
 		$this->content->text .= '<button id="newChessGame">New Game of AI vs me chess</button><br>';
 		$this->content->text .= '<button id="loadPrevChessGame">Load last game of AI vs me chess</button><br>';
+		$this->content->text .= '<button id="saveChessGame">Save game</button><br>';
 		$this->content->text .= '<div id="board" style="width: 300px"></div>';
 		$this->content->text .= '<p>Status: <span id="status"></span></p>';
 		$this->content->text .= '<p>FEN: <span id="fen"></span></p>';
