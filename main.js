@@ -1,4 +1,4 @@
-'use strict'
+//'use strict'
 
 console.log("chess!");
 
@@ -103,18 +103,33 @@ $( document ).ready(function() {
 		game = new Chess();
 		board = ChessBoard('board', cfg);
 
-		// Example code to get information from api
-		// Y.io(
-		// 	M.cfg.wwwroot + "/blocks/chessblock/api/get_pgn.php", {
-		// 		method: "GET",
-		// 		on: {
-		// 			success: function(io, o, arguments) {
-		// 				console.log(o.responseText)
-		// 			}
-		// 		}
-		// 	}
-		// );
 
 		updateStatus();
 	});
+
+	$('#loadPrevChessGame').click(function(){
+		console.log("LOADING...");
+		//Example code to get information from api
+		Y.io(
+			M.cfg.wwwroot + "/blocks/chessblock/api/get_game_data.php", {
+				method: "GET",
+				on: {
+					success: function(io, o, arguments) {
+
+						var gameData = JSON.parse(o.response);
+						if( gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
+							var cfgLoad = cfg;
+							cfg.position = gameData.gameData.game_fen;
+
+							game = new Chess(gameData.gameData.game_fen);
+							board = ChessBoard('board', cfgLoad);
+						}
+
+					}
+				}
+			}
+		);
+
+	});
+
 });

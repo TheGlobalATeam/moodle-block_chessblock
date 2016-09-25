@@ -31,6 +31,7 @@ class block_chessblock extends block_base {
 		//first element with no .=, just =
 		$this->content->text .= "<h2>Chess!</h2>";
 		$this->content->text .= '<button id="newChessGame">New Game of AI vs me chess</button><br>';
+		$this->content->text .= '<button id="loadPrevChessGame">Load last game of AI vs me chess</button><br>';
 		$this->content->text .= '<div id="board" style="width: 300px"></div>';
 		$this->content->text .= '<p>Status: <span id="status"></span></p>';
 		$this->content->text .= '<p>FEN: <span id="fen"></span></p>';
@@ -46,7 +47,7 @@ class block_chessblock extends block_base {
 			$PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
 		}
 
-		$insIRD = $this->insertTestRecord();
+		//$insIRD = $this->insertTestRecord();
 		//$fen = $this->retriveTestRecordFen(1);
 
 		//$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
@@ -67,13 +68,13 @@ class block_chessblock extends block_base {
         $table = 'block_chessblock_games';
 
         $record = new stdClass();
-        $record->game_fen  = 'FEN2';
-        $record->game_pgn = 'PGN2';
+        $record->game_fen  = 'rnbqkbnr/ppp1pppp/3p4/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 2';
+        $record->game_pgn = 'a3 d6';
         $record->white_user_id = $USER->id;
         $record->black_user_id = '-1';
         $status = $DB->insert_record($table, $record, false);
         return $status;
-		
+
     }
 
     // Pulling all records that fit parms
