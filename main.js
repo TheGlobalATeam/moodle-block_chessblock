@@ -135,7 +135,9 @@ $( document ).ready(function() {
 	$('#newChessGame').click(function(){
 
 		game = new Chess();
-		board = ChessBoard('board', cfg);
+		//start fen
+		cfg.position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+		board = new ChessBoard('board', cfg);
 		gameRunning = true;
 
 		updateStatus();
@@ -153,10 +155,10 @@ $( document ).ready(function() {
 						var gameData = JSON.parse(o.response);
 						if( gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
 							var cfgLoad = cfg;
-							cfg.position = gameData.gameData.game_fen;
+							cfgLoad.position = gameData.gameData.game_fen;
 
 							game = new Chess(gameData.gameData.game_fen);
-							board = ChessBoard('board', cfgLoad);
+							board = new ChessBoard('board', cfgLoad);
 							gameRunning = true;
 
 						}
