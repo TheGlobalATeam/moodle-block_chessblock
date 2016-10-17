@@ -42,13 +42,17 @@ class block_chessblock extends block_base {
 			$PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chessboard-0.3.0.js?'.rand());
 			$PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chess.js?'.rand());
 			$PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
+
+            $stringmanager = get_string_manager();
+            $strings = $stringmanager->load_component_strings('block_chessblock', current_language());
+            $PAGE->requires->js_init_call('loadLanguage', array($strings));
 		}
 
 		//$insIRD = $this->insertTestRecord();
 		//$fen = $this->retriveTestRecordFen(1);
 
 		//$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
-		$this->content->footer = "User ID: ".$USER->id;
+		$this->content->footer =  get_string('userid', 'block_chessblock') . ': ' . $USER->id;
 
 		return $this->content;
 

@@ -1,15 +1,15 @@
-//'use strict'
 
-console.log("chess!");
+var language = {};
 
+function loadLanguage(Y, currentLanguage) {
+    language = currentLanguage;
+}
 
 $( document ).ready(function() {
 
 	var board;
 	var game = new Chess();
 	var statusEl = $('#status');
-	var fenEl = $('#fen');
-	var pgnEl = $('#pgn');
 	var gameRunning = false;
 
 	// do not pick up pieces if the game is over
@@ -62,29 +62,21 @@ $( document ).ready(function() {
 		updateStatus();
 	};
 
-	var updateStatus = function() {
-		var status = '';
-		var moveColor = 'White';
+    var updateStatus = function() {
+        var status = '';
+        var moveColor = (game.turn() === 'b')? language['black']: language['white'];
 
-		if (game.turn() === 'b') {
-			moveColor = 'Black';
-		} if (game.in_checkmate() === true) {
-			// checkmate
-			status = 'Game over, ' + moveColor + ' is in checkmate.';
-		} else if (game.in_draw() === true) {
-			// draw?
-			status = 'Game over, drawn position';
-		} else {
-			// game still on
-			status = moveColor + ' to move';
-			// check?
-			if (game.in_check() === true) {
-				status += ', ' + moveColor + ' is in check';
-			}
-		}
+        if (game.in_checkmate() === true) {
+            status = language['gameover'] + ', ' + moveColor + ' ' + language['isincheckmate'];
+        } else if (game.in_draw() == true) {
+            status = language['gameover'] + ', ' + language['drawnposition'];
+        } else {
+            status = moveColor + ' ' + language['tomove'];
+            if (game.in_check() === true) {
+                status += ', ' + moveColor + ' ' + language['isincheck'];
+            }
+        }
 		statusEl.html(status);
-		fenEl.html(game.fen());
-		pgnEl.html(game.pgn());
 	};
 
 	var saveGame = function(){
