@@ -27,14 +27,12 @@ class block_chessblock extends block_base {
 
 		$this->content         =  new stdClass;
 		$this->content->text = "";
-
-		//first element with no .=, just =
-		$this->content->text .= "<h2>Chess!</h2>";
-		$this->content->text .= '<button id="newChessGame">New Game of AI vs me chess</button><br>';
+		$this->content->text .= '<h2>' . get_string('blocktitle', 'block_chessblock') . '</h2>';
+		$this->content->text .= '<button id="newChessGame">' . get_string('newgamebutton', 'block_chessblock') . '</button><br>';
 		$this->content->text .= '<div id="board" style="width: 300px"></div>';
-		$this->content->text .= '<p>Status: <span id="status"></span></p>';
-		$this->content->text .= '<p>FEN: <span id="fen"></span></p>';
-		$this->content->text .= '<p>PGN: <span id="pgn"></span></p>';
+		$this->content->text .= '<p>' . get_string('gamestatus', 'block_chessblock') . ':<span id="status"></span></p>';
+		//$this->content->text .= '<p>FEN: <span id="fen"></span></p>';
+		//$this->content->text .= '<p>PGN: <span id="pgn"></span></p>';
 		$this->content->text .= '<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>';
 
 		//loading js file, while preventing moodle catching. probably a better way somewhere...
