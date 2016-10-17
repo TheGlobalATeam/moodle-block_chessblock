@@ -1,4 +1,4 @@
-'use strict'
+//'use strict'
 
 console.log("chess!");
 
@@ -10,6 +10,7 @@ $( document ).ready(function() {
 	var statusEl = $('#status');
 	var fenEl = $('#fen');
 	var pgnEl = $('#pgn');
+	var gameRunning = false;
 
 	// do not pick up pieces if the game is over
 	// only pick up pieces for the side to move
@@ -86,6 +87,32 @@ $( document ).ready(function() {
 		pgnEl.html(game.pgn());
 	};
 
+	var saveGame = function(){
+
+		if(!gameRunning){
+			console.log("need to start a game in order to save");
+			return;
+		}
+
+		//CAN't FIND any documentation...
+		//POST to api
+		Y.io(
+			M.cfg.wwwroot + "/blocks/chessblock/api/post_game_data.php", {
+				method: "POST",
+				data: 'gameFEN='+game.fen()+'&gamePGN=NOPE',
+				on: {
+					success: function(io, o, arguments) {
+
+						console.log("SAVED!");
+						//console.log(o.response);
+
+					}
+				}
+			}
+		);
+
+	}
+
 	var cfg = {
 	  draggable: true,
 	  position: 'start',
@@ -97,12 +124,50 @@ $( document ).ready(function() {
 
 	updateStatus();
 
+
+
+	$('#saveChessGame').click(function(){
+
+		saveGame();
+
+	});
+
 	$('#newChessGame').click(function(){
-	    console.log("starting!");
 
 		game = new Chess();
-		board = ChessBoard('board', cfg);
+		//start fen
+		cfg.position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+		board = new ChessBoard('board', cfg);
+		gameRunning = true;
 
 		updateStatus();
 	});
+
+	$('#loadPrevChessGame').click(function(){
+
+		//Loading from API
+		Y.io(
+			M.cfg.wwwroot + "/blocks/chessblock/api/get_game_data.php", {
+				method: "GET",
+				on: {
+					success: function(io, o, arguments) {
+
+						var gameData = JSON.parse(o.response);
+						if( gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
+							var cfgLoad = cfg;
+							cfgLoad.position = gameData.gameData.game_fen;
+
+							game = new Chess(gameData.gameData.game_fen);
+							board = new ChessBoard('board', cfgLoad);
+							gameRunning = true;
+
+						}
+
+					}
+				}
+			}
+		);
+
+	});
+
 });

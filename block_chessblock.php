@@ -19,7 +19,7 @@ class block_chessblock extends block_base {
 
 	public function get_content() {
 
-		global $CFG, $OUTPUT, $USER, $DB, $PAGE;
+		global $CFG, $OUTPUT, $USER, $DB, $PAGE, $USER;
 
 		if ($this->content !== null) {
 			return $this->content;
@@ -45,9 +45,10 @@ class block_chessblock extends block_base {
 		}
 
 		//$insIRD = $this->insertTestRecord();
-		//$fen3 = $this->retriveTestRecordFen(3);
+		//$fen = $this->retriveTestRecordFen(1);
 
 		//$this->content->footer = 'Last Insert status: '.$insIRD . ' | Fen of id 3: '.$fen3;
+		$this->content->footer = "User ID: ".$USER->id;
 
 		return $this->content;
 
@@ -64,12 +65,13 @@ class block_chessblock extends block_base {
         $table = 'block_chessblock_games';
 
         $record = new stdClass();
-        $record->game_fen  = 'FEN';
-        $record->game_pgn = 'PGN';
-        $record->white_user_id = '10';
-        $record->black_user_id = '11';
+        $record->game_fen  = 'rnbqkbnr/ppp1pppp/3p4/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 2';
+        $record->game_pgn = 'a3 d6';
+        $record->white_user_id = $USER->id;
+        $record->black_user_id = '-1';
         $status = $DB->insert_record($table, $record, false);
         return $status;
+
     }
 
     // Pulling all records that fit parms
