@@ -19,3 +19,4 @@ $string['gameover'] = 'играта заврши';
 $string['isincheck'] = 'шах';
 $string['isincheckmate'] = 'шах mat';
 $string['drawnposition'] = 'нерешено';
+$string['download'] = 'Превземи';

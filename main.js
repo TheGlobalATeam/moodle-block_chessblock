@@ -15,12 +15,6 @@ $( document ).ready(function() {
     // do not pick up pieces if the game is over
     // only pick up pieces for the side to move
     var onDragStart = function(source, piece, position, orientation) {
-        // if (game.game_over() === true ||
-        // 	(game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-        // 	(game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-        // 		return false;
-        // }
-
         //only white may move, on their turn
         if (game.in_checkmate() === true ||
             game.in_draw() === true ||
@@ -84,6 +78,21 @@ $( document ).ready(function() {
         removeHighlight();
     }
 
+    var putDownloadLinks= function() {
+        var fen_link = '<a id="download_fen">' + language['download'] + ' FEN</a>'
+        var pgn_link = '<a id="download_pgn">' + language['download'] + ' PGN</a>'
+        $('#download_fen_parent').empty().append(fen_link);
+        $('#download_pgn_parent').empty().append(pgn_link);
+        updateDownloadLinks();
+    }
+
+    var updateDownloadLinks = function() {
+        var fen_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.fen());
+        var pgn_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.pgn());
+        $('#download_fen').attr('href', fen_href).attr('download', 'fen.txt');
+        $('#download_pgn').attr('href', pgn_href).attr('download', 'pgn.txt');
+    }
+
     var makeRandomMove = function() {
         var possibleMoves = game.moves();
 
@@ -94,6 +103,7 @@ $( document ).ready(function() {
         game.move(possibleMoves[randomIndex]);
         board.position(game.fen());
         updateStatus();
+        updateDownloadLinks();
     };
 
     var updateStatus = function() {
@@ -151,13 +161,14 @@ $( document ).ready(function() {
 
     $('#saveChessGame').click(saveGame());
 
-	$('#newChessGame').click(function(){
+    $('#newChessGame').click(function(){
         game = new Chess();
         //start fen
         cfg.position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         board = new ChessBoard('board', cfg);
         gameRunning = true;
         updateStatus();
+        putDownloadLinks();
     });
 
     $('#loadPrevChessGame').click(function(){

@@ -32,6 +32,8 @@ class block_chessblock extends block_base {
         $this->content->text .= '<div id="board" style="width: 100%"></div>';
 		//$this->content->text .= '<div id="board" style="width: 300px"></div>';
 		$this->content->text .= '<p>' . get_string('gamestatus', 'block_chessblock') . ':<span id="status"></span></p>';
+		$this->content->text .= '<p id="download_fen_parent"></p>';
+		$this->content->text .= '<p id="download_pgn_parent"></p>';
 		//$this->content->text .= '<p>FEN: <span id="fen"></span></p>';
 		//$this->content->text .= '<p>PGN: <span id="pgn"></span></p>';
 		$this->content->text .= '<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>';
