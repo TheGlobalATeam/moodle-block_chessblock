@@ -64,7 +64,7 @@ $( document ).ready(function() {
     }
 
     var onMouseoverSquare = function(square, piece) {
-        console.log('Over ' + square);
+
         // Get possible moves for this square:
         var moves = game.moves({
             square: square,
