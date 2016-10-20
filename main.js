@@ -20,7 +20,7 @@ $( document ).ready(function() {
 		// 	(game.turn() === 'b' && piece.search(/^w/) !== -1)) {
 		// 		return false;
 		// }
-
+		$(window).resize(board.resize);
 		//only white may move, on their turn
 		if (game.in_checkmate() === true ||
 			game.in_draw() === true ||
@@ -133,6 +133,7 @@ $( document ).ready(function() {
 		gameRunning = true;
 
 		updateStatus();
+		$(window).resize(board.resize);
 	});
 
 	$('#loadPrevChessGame').click(function(){
