@@ -196,6 +196,7 @@ $( document ).ready(function() {
                             cfgLoad.position = gameData.gameData.game_fen;
                             game = new Chess(gameData.gameData.game_fen);
                             board = new ChessBoard('board', cfgLoad);
+                            $(window).resize(board.resize);
                             gameRunning = true;
                         }
                     }
