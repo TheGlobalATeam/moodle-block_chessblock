@@ -1,41 +1,46 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
-Some help:
-https://github.com/trampgeek/moodle-qtype_coderunner/blob/master/ajax.php
-
-*/
 define('AJAX_SCRIPT', true);
 require('../../../config.php');
 
 require_login();
 
 $table = 'block_chessblock_games';
-//$USER->id contains the ID if the user
+
 $result = $DB->get_records($table, array(
-	'white_user_id' => $USER->id,
-	'black_user_id' => -1
+    'white_user_id' => $USER->id,
+    'black_user_id' => -1
 ));
 
 header('Content-Type: text/html; charset=utf-8');
-//var_dump($result);
 
-$returnObject = array();
+$returnobject = array();
 
-if(count($result) == 0){
-	//nothing found!
-	$returnObject['status'] = false;
-}else{
-	//returns last object (like ORDERY BY id DESC)
-	$returnObject['status'] = true;
+if (count($result) == 0) {
+    // Nothing found!
+    $returnobject['status'] = false;
+} else {
+    // Returns last object (like ORDERY BY id DESC).
+    $returnobject['status'] = true;
 
-	$ids = array_keys($result);
-	rsort($ids);
-	$returnObject['gameData'] = $result[$ids[0]];
+    $ids = array_keys($result);
+    rsort($ids);
+    $returnobject['gameData'] = $result[$ids[0]];
 }
 
-
-//header("Content-Type: application/json; charset=UTF-8");
-//header('Access-Control-Allow-Origin: *');
-$jsonData = $returnObject;
-echo json_encode($jsonData, JSON_PRETTY_PRINT);
+$jsondata = $returnobject;
+echo json_encode($jsondata, JSON_PRETTY_PRINT);

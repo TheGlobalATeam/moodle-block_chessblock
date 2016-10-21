@@ -1,40 +1,49 @@
 <?php
-/*
-Some help:
-https://github.com/trampgeek/moodle-qtype_coderunner/blob/master/ajax.php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
 define('AJAX_SCRIPT', true);
 require('../../../config.php');
 
 require_login();
-$userID = $USER->id;
-//$userID = 2;
+$userid = $USER->id;
 
-$returnObject = array();
+$returnobject = array();
 
-if(isset($_POST['gameFEN']) && isset($_POST['gamePGN'])){
+if (isset($_POST['gameFEN']) && isset($_POST['gamePGN'])) {
 
-	$gameFEN = $_POST['gameFEN'];
-	$gamePGN = $_POST['gamePGN'];
+    $gamefen = $_POST['gameFEN'];
+    $gamepgn = $_POST['gamePGN'];
 
-	$table = 'block_chessblock_games';
-	$record = new stdClass();
-	$record->game_fen  = $gameFEN;
-	$record->game_pgn = $gamePGN;
-	$record->white_user_id = $userID;
-	$record->black_user_id = '-1';
-	$status = $DB->insert_record($table, $record, false);
+    $table = 'block_chessblock_games';
+    $record = new stdClass();
+    $record->game_fen  = $gamefen;
+    $record->game_pgn = $gamepgn;
+    $record->white_user_id = $userid;
+    $record->black_user_id = '-1';
+    $status = $DB->insert_record($table, $record, false);
 
-	$returnObject['status'] = true;
+    $returnobject['status'] = true;
 
-}else{
+} else {
 
-	$returnObject['status'] = false;
+    $returnobject['status'] = false;
 
 }
 
 header("Content-Type: application/json; charset=UTF-8");
-//header('Access-Control-Allow-Origin: *');
-$jsonData = $returnObject;
-echo json_encode($jsonData, JSON_PRETTY_PRINT);
+
+$jsondata = $returnobject;
+echo json_encode($jsondata, JSON_PRETTY_PRINT);
