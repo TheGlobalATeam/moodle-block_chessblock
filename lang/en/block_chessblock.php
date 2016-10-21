@@ -21,7 +21,8 @@ $string['chessblock:myaddinstance'] = 'Add a new simple chess block to the My Mo
 
 // Static html strings.
 $string['blocktitle'] = 'Chess';
-$string['newgamebutton'] = 'Start new game against Computer';
+$string['newgamebutton'] = 'Start new game';
+$string['loadgamebutton'] = 'Load previous game';
 $string['gamestatus'] = 'Status';
 $string['userid'] = 'User ID';
 

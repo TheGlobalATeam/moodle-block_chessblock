@@ -1,4 +1,3 @@
-
 var language = {};
 
 function loadLanguage(Y, currentLanguage) {
@@ -12,10 +11,9 @@ $( document ).ready(function() {
     var statusEl = $('#status');
     var gameRunning = false;
 
-    // do not pick up pieces if the game is over
-    // only pick up pieces for the side to move
+    // Do not pick up pieces if the game is over only pick up pieces for the side to move.
     var onDragStart = function(source, piece, position, orientation) {
-        //only white may move, on their turn
+        // Only white may move, on their turn.
         if (game.in_checkmate() === true ||
             game.in_draw() === true ||
             piece.search(/^b/) !== -1) {
@@ -26,23 +24,23 @@ $( document ).ready(function() {
     var onDrop = function(source, target) {
         removeHighlight();
 
-        // see if the move is legal
+        // See if the move is legal.
         var move = game.move({
             from: source,
             to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+            promotion: 'q' // NOTE: always promote to a queen for example simplicity.
         });
 
-        // illegal move
+        // Illegal move.
         if (move === null) return 'snapback';
 
         updateStatus();
         updateDownloadLinks();
+        saveGame();
         window.setTimeout(makeRandomMove, 250);
     };
 
-    // update the board position after the piece snap
-    // for castling, en passant, pawn promotion
+    // Update the board position after the piece snap for castling, en passant, pawn promotion.
     var onSnapEnd = function() {
         board.position(game.fen());
     };
@@ -60,7 +58,7 @@ $( document ).ready(function() {
 
     var onMouseoverSquare = function(square, piece) {
 
-        // Get possible moves for this square:
+        // Get possible moves for this square.
         var moves = game.moves({
             square: square,
             verbose: true
@@ -110,7 +108,7 @@ $( document ).ready(function() {
     var makeRandomMove = function() {
         var possibleMoves = game.moves();
 
-        // game over
+        // Game over.
         if (possibleMoves.length === 0) return;
 
         var randomIndex = Math.floor(Math.random() * possibleMoves.length);
@@ -118,6 +116,7 @@ $( document ).ready(function() {
         board.position(game.fen());
         updateStatus();
         updateDownloadLinks();
+        saveGame();
     };
 
     var updateStatus = function() {
@@ -144,8 +143,6 @@ $( document ).ready(function() {
             return;
         }
 
-        //CAN't FIND any documentation...
-        //POST to api
         Y.io(
             M.cfg.wwwroot + "/blocks/chessblock/api/post_game_data.php", {
                 method: "POST",
@@ -153,7 +150,6 @@ $( document ).ready(function() {
                 on: {
                     success: function(io, o, arguments) {
                         console.log("SAVED!");
-                        //console.log(o.response);
                     }
                 }
             }
@@ -173,28 +169,26 @@ $( document ).ready(function() {
 
     updateStatus();
 
-    $('#saveChessGame').click(saveGame());
-
     $('#newChessGame').click(function(){
         game = new Chess();
-        //start fen
-        cfg.position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         board = new ChessBoard('board', cfg);
+        $('#loadPrevChessGame').hide();
         gameRunning = true;
         updateStatus();
         putDownloadLinks();
     });
 
     $('#loadPrevChessGame').click(function(){
-        //Loading from API
+        $('#loadPrevChessGame').hide();
+        // Loading from API.
         Y.io(
             M.cfg.wwwroot + "/blocks/chessblock/api/get_game_data.php", {
                 method: "GET",
                 on: {
                     success: function(io, o, arguments) {
                         var gameData = JSON.parse(o.response);
-                        if( gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
-                            var cfgLoad = cfg;
+                        if (gameData.status && gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
+                            var cfgLoad = $.extend({}, cfg); // Copy configuration.
                             cfgLoad.position = gameData.gameData.game_fen;
                             game = new Chess(gameData.gameData.game_fen);
                             board = new ChessBoard('board', cfgLoad);
