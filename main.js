@@ -37,6 +37,7 @@ $( document ).ready(function() {
         if (move === null) return 'snapback';
 
         updateStatus();
+        updateDownloadLinks();
         window.setTimeout(makeRandomMove, 250);
     };
 
@@ -88,7 +89,20 @@ $( document ).ready(function() {
 
     var updateDownloadLinks = function() {
         var fen_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.fen());
-        var pgn_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.pgn());
+        var result = '*';
+
+        if (game.in_draw()) {
+            result = '1/2-1/2';
+        }
+        if (game.in_checkmate()) {
+            result = game.turn() === 'b'? '1-0': '0-1';
+        }
+        var pgn_data = '[White "Human"]\n'+
+                       '[Black "Moodle computer"]\n'+
+                       '[Result "' + result + '"]\n'
+                       + game.pgn();
+        var pgn_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(pgn_data);
+
         $('#download_fen').attr('href', fen_href).attr('download', 'fen.fen');
         $('#download_pgn').attr('href', pgn_href).attr('download', 'pgn.pgn');
     }
