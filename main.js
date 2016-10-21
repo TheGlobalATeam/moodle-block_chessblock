@@ -81,16 +81,16 @@ $( document ).ready(function() {
     var putDownloadLinks= function() {
         var fen_link = '<a id="download_fen">' + language['download'] + ' FEN</a>'
         var pgn_link = '<a id="download_pgn">' + language['download'] + ' PGN</a>'
-        $('#download_fen_parent').empty().append(fen_link);
-        $('#download_pgn_parent').empty().append(pgn_link);
+        $('#download_fen_parent').html(fen_link);
+        $('#download_pgn_parent').html(pgn_link);
         updateDownloadLinks();
     }
 
     var updateDownloadLinks = function() {
         var fen_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.fen());
         var pgn_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.pgn());
-        $('#download_fen').attr('href', fen_href).attr('download', 'fen.txt');
-        $('#download_pgn').attr('href', pgn_href).attr('download', 'pgn.txt');
+        $('#download_fen').attr('href', fen_href).attr('download', 'fen.fen');
+        $('#download_pgn').attr('href', pgn_href).attr('download', 'pgn.pgn');
     }
 
     var makeRandomMove = function() {
