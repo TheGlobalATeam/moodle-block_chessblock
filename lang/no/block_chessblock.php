@@ -19,3 +19,4 @@ $string['gameover'] = 'Spillet er over';
 $string['isincheck'] = 'er i sjakk';
 $string['isincheckmate'] = 'er i sjakk matt';
 $string['drawnposition'] = 'Uavgjort';
+$string['download'] = 'Nedlasting';

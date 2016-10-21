@@ -19,3 +19,4 @@ $string['gameover'] = 'Game over';
 $string['isincheck'] = 'is in check';
 $string['isincheckmate'] = 'is in checkmate';
 $string['drawnposition'] = 'it is a draw';
+$string['download'] = 'Download';
