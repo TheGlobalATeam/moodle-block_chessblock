@@ -14,6 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The version file
+ *
+ * For each update, especially database changes, the
+ * version needs to be updated to trigger an upgrade when signed in.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 $plugin->version = 2016092305;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2013040500;        // Requires this Moodle version.

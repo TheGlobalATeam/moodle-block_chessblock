@@ -13,14 +13,41 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The main blockplugin file
+ *
+ * This file contains the initalizing of the chessblock plugin,
+ * mainly defining the html of the view.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/pagelib.php');
 
+/**
+ * This is the main block class, extending block_base.
+ *
+ * The main class for chessblock plugin containing
+ * the creating of the view and setting uup js files.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_chessblock extends block_base {
 
+    /** @var boolean This variable checks if js is loaded */
     private $jsloaded = false;
 
+
+    /**
+     * Initalizing the block plugin.
+     */
     public function init() {
         GLOBAL $PAGE;
 
@@ -28,10 +55,19 @@ class block_chessblock extends block_base {
 
     }
 
+    /**
+     * The applicable_formats function
+     */
     public function applicable_formats() {
         return array('all' => true);
     }
 
+
+    /**
+     * Returns the content og the block.
+     *
+     * @return stdClass containing html for the plugin view.
+     */
     public function get_content() {
 
         global $CFG, $OUTPUT, $USER, $DB, $PAGE, $USER;
@@ -67,6 +103,5 @@ class block_chessblock extends block_base {
         $this->content->footer = get_string('userid', 'block_chessblock') . ': ' . $USER->id;
 
         return $this->content;
-
     }
 }
