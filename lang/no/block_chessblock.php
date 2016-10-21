@@ -21,7 +21,8 @@ $string['chessblock:myaddinstance'] = 'Legg til ny simpel Sjakk Blokk til min Mo
 
 // Static html strings.
 $string['blocktitle'] = 'Sjakk';
-$string['newgamebutton'] = 'Start nytt spill mot datamaskinen';
+$string['newgamebutton'] = 'Start nytt spill';
+$string['loadgamebutton'] = 'Last forrige spillet';
 $string['gamestatus'] = 'Status';
 $string['userid'] = 'Bruker ID';
 

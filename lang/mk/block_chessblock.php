@@ -21,7 +21,8 @@ $string['chessblock:myaddinstance'] = 'Додадете нов шах блок �
 
 // Static html strings.
 $string['blocktitle'] = 'шах';
-$string['newgamebutton'] = 'Започнете нова игра против компјутерот';
+$string['newgamebutton'] = 'Започнете нова игра';
+$string['loadgamebutton'] = 'Вчитај претходната игра';
 $string['gamestatus'] = 'статус';
 $string['userid'] = 'ID на корисникот';
 

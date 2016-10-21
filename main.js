@@ -1,4 +1,3 @@
-
 var language = {};
 
 function loadLanguage(Y, currentLanguage) {
@@ -12,10 +11,9 @@ $( document ).ready(function() {
     var statusEl = $('#status');
     var gameRunning = false;
 
-    // do not pick up pieces if the game is over
-    // only pick up pieces for the side to move
+    // Do not pick up pieces if the game is over only pick up pieces for the side to move.
     var onDragStart = function(source, piece, position, orientation) {
-        //only white may move, on their turn
+        // Only white may move, on their turn.
         if (game.in_checkmate() === true ||
             game.in_draw() === true ||
             piece.search(/^b/) !== -1) {
@@ -26,23 +24,25 @@ $( document ).ready(function() {
     var onDrop = function(source, target) {
         removeHighlight();
 
-        // see if the move is legal
+        // See if the move is legal.
         var move = game.move({
             from: source,
             to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+            promotion: 'q' // NOTE: always promote to a queen for example simplicity.
         });
 
-        // illegal move
-        if (move === null) return 'snapback';
+        // Illegal move.
+        if (move === null) {
+            return 'snapback';
+        }
 
         updateStatus();
         updateDownloadLinks();
+        saveGame();
         window.setTimeout(makeRandomMove, 250);
     };
 
-    // update the board position after the piece snap
-    // for castling, en passant, pawn promotion
+    // Update the board position after the piece snap for castling, en passant, pawn promotion.
     var onSnapEnd = function() {
         board.position(game.fen());
     };
@@ -54,21 +54,23 @@ $( document ).ready(function() {
     var highlightSquare = function(square) {
         var squareElement = $('#board .square-' + square);
         var isSqaureBlack = (squareElement.hasClass('black-3c85d') === true);
-        var backgroundColor = (isSqaureBlack)? '#696969': '#a9a9a9';
+        var backgroundColor = (isSqaureBlack) ? '#696969' : '#a9a9a9';
         squareElement.css('background', backgroundColor);
     }
 
     var onMouseoverSquare = function(square, piece) {
 
-        // Get possible moves for this square:
+        // Get possible moves for this square.
         var moves = game.moves({
             square: square,
             verbose: true
         })
 
-        if (moves.length === 0) return;
+        if (moves.length === 0) {
+            return;
+        }
 
-        // Highlight hovered square and leagl moves:
+        // Highlight hovered square and leagl moves.
         highlightSquare(square);
         for (var i = 0; i < moves.length; ++i) {
             highlightSquare(moves[i].to);
@@ -79,7 +81,7 @@ $( document ).ready(function() {
         removeHighlight();
     }
 
-    var putDownloadLinks= function() {
+    var putDownloadLinks = function() {
         var fen_link = '<a id="download_fen">' + language['download'] + ' FEN</a>'
         var pgn_link = '<a id="download_pgn">' + language['download'] + ' PGN</a>'
         $('#download_fen_parent').html(fen_link);
@@ -95,12 +97,9 @@ $( document ).ready(function() {
             result = '1/2-1/2';
         }
         if (game.in_checkmate()) {
-            result = game.turn() === 'b'? '1-0': '0-1';
+            result = game.turn() === 'b' ? '1-0' : '0-1';
         }
-        var pgn_data = '[White "Human"]\n'+
-                       '[Black "Moodle computer"]\n'+
-                       '[Result "' + result + '"]\n'
-                       + game.pgn();
+        var pgn_data = '[White "Human"]\n[Black "Moodle computer"]\n[Result "' + result + '"]\n' + game.pgn();
         var pgn_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(pgn_data);
 
         $('#download_fen').attr('href', fen_href).attr('download', 'fen.fen');
@@ -110,19 +109,22 @@ $( document ).ready(function() {
     var makeRandomMove = function() {
         var possibleMoves = game.moves();
 
-        // game over
-        if (possibleMoves.length === 0) return;
+        // Game over.
+        if (possibleMoves.length === 0) {
+            return;
+        }
 
         var randomIndex = Math.floor(Math.random() * possibleMoves.length);
         game.move(possibleMoves[randomIndex]);
         board.position(game.fen());
         updateStatus();
         updateDownloadLinks();
+        saveGame();
     };
 
     var updateStatus = function() {
         var status = '';
-        var moveColor = (game.turn() === 'b')? language['black']: language['white'];
+        var moveColor = (game.turn() === 'b') ? language['black'] : language['white'];
 
         if (game.in_checkmate() === true) {
             status = language['gameover'] + ', ' + moveColor + ' ' + language['isincheckmate'];
@@ -144,16 +146,13 @@ $( document ).ready(function() {
             return;
         }
 
-        //CAN't FIND any documentation...
-        //POST to api
         Y.io(
             M.cfg.wwwroot + "/blocks/chessblock/api/post_game_data.php", {
                 method: "POST",
-                data: 'gameFEN='+game.fen()+'&gamePGN=NOPE',
+                data: 'gameFEN=' + game.fen() + '&gamePGN=NOPE',
                 on: {
                     success: function(io, o, arguments) {
                         console.log("SAVED!");
-                        //console.log(o.response);
                     }
                 }
             }
@@ -173,31 +172,31 @@ $( document ).ready(function() {
 
     updateStatus();
 
-    $('#saveChessGame').click(saveGame());
-
     $('#newChessGame').click(function(){
         game = new Chess();
-        //start fen
-        cfg.position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         board = new ChessBoard('board', cfg);
+        $('#loadPrevChessGame').hide();
         gameRunning = true;
         updateStatus();
+        $(window).resize(board.resize);
         putDownloadLinks();
     });
 
     $('#loadPrevChessGame').click(function(){
-        //Loading from API
+        $('#loadPrevChessGame').hide();
+        // Loading from API.
         Y.io(
             M.cfg.wwwroot + "/blocks/chessblock/api/get_game_data.php", {
                 method: "GET",
                 on: {
                     success: function(io, o, arguments) {
                         var gameData = JSON.parse(o.response);
-                        if( gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
-                            var cfgLoad = cfg;
+                        if (gameData.status && gameData.gameData.game_fen != null &&  gameData.gameData.game_fen.length > 0){
+                            var cfgLoad = $.extend({}, cfg); // Copy configuration.
                             cfgLoad.position = gameData.gameData.game_fen;
                             game = new Chess(gameData.gameData.game_fen);
                             board = new ChessBoard('board', cfgLoad);
+                            $(window).resize(board.resize);
                             gameRunning = true;
                         }
                     }
