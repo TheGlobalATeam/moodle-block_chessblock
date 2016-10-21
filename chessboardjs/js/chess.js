@@ -35,37 +35,37 @@
 
 var Chess = function(fen) {
 
-  /* jshint indent: false */
+    /* jshint indent: false */
 
-  var BLACK = 'b';
-  var WHITE = 'w';
+    var BLACK = 'b';
+    var WHITE = 'w';
 
-  var EMPTY = -1;
+    var EMPTY = -1;
 
-  var PAWN = 'p';
-  var KNIGHT = 'n';
-  var BISHOP = 'b';
-  var ROOK = 'r';
-  var QUEEN = 'q';
-  var KING = 'k';
+    var PAWN = 'p';
+    var KNIGHT = 'n';
+    var BISHOP = 'b';
+    var ROOK = 'r';
+    var QUEEN = 'q';
+    var KING = 'k';
 
-  var SYMBOLS = 'pnbrqkPNBRQK';
+    var SYMBOLS = 'pnbrqkPNBRQK';
 
-  var DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    var DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-  var POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
+    var POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
-  var PAWN_OFFSETS = {
-    b: [16, 32, 17, 15],
-    w: [-16, -32, -17, -15]
-  };
+    var PAWN_OFFSETS = {
+        b: [16, 32, 17, 15],
+        w: [-16, -32, -17, -15]
+    };
 
-  var PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
-    b: [-17, -15,  17,  15],
-    r: [-16,   1,  16,  -1],
-    q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1]
+    var PIECE_OFFSETS = {
+        n: [-18, -33, -31, -14,  18, 33, 31,  14],
+        b: [-17, -15,  17,  15],
+        r: [-16,   1,  16,  -1],
+        q: [-17, -16, -15,   1,  17, 16, 15,  -1],
+        k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   };
 
   var ATTACKS = [
