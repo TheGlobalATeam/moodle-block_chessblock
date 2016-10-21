@@ -14,7 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The upgrade file for database
+ *
+ * Each upgarde should be specified with their version number.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
+ * MOODLE_INTERNAL - object, moodles intenral object.
+ */
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Defines changes to the db when to upgrade
+ *
+ * @param int $oldversion The old version of this plugin
+ * @return bool The condition if the upgrade is successfully
+ */
 function xmldb_block_chessblock_upgrade($oldversion) {
     global $CFG, $DB;
 

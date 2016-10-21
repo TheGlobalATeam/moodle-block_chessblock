@@ -25,6 +25,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ /**
+  * MOODLE_INTERNAL - object, moodles intenral object.
+  */
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/pagelib.php');
@@ -43,7 +46,6 @@ class block_chessblock extends block_base {
 
     /** @var boolean This variable checks if js is loaded */
     private $jsloaded = false;
-
 
     /**
      * Initalizing the block plugin.

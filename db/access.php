@@ -13,7 +13,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The access php file
+ *
+ * For providing with instance information.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+ /**
+  * MOODLE_INTERNAL - object, moodles intenral object.
+  */
 defined('MOODLE_INTERNAL') || die();
+
 $capabilities = array(
 'block/chessblock:myaddinstance' => array(
     'captype' => 'write',

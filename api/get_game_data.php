@@ -14,6 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * APi for getting game data.
+ *
+ * Returns json data of game state.
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+ /**
+  * AJAX_SCRIPT - boolean, true.
+  */
 define('AJAX_SCRIPT', true);
 require('../../../config.php');
 

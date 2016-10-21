@@ -13,6 +13,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Norwegain language strings
+ *
+ * Contains Norwegian language words
+ *
+ * @package block_chessblock
+ * @copyright 2016 Global A-Team
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['pluginname'] = 'Sjakk Blokk';
 $string['chessblock'] = 'Sjakk Blokk';
 $string['blockstring'] = 'Sjakk Blockk';
