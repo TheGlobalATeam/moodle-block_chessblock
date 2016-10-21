@@ -178,6 +178,7 @@ $( document ).ready(function() {
         $('#loadPrevChessGame').hide();
         gameRunning = true;
         updateStatus();
+        $(window).resize(board.resize);
         putDownloadLinks();
     });
 
