@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>chessboardjs</location>
+        <name>Chessboard JS</name>
+        <license>GPL</license>
+        <version>66.77</version>
+        <licenseversion>3.0+</licenseversion>
+    </library>
+</libraries>
