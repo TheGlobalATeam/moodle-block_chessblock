@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Macedonian language strings
+ * Macedonian Language strings
  *
  * Contains Macedonian language words
  *

@@ -30,7 +30,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Defines changes to the db when to upgrade
+ * Defines changes to the DB when to upgrade
  *
  * @param int $oldversion The old version of this plugin
  * @return bool The condition if the upgrade is successfully

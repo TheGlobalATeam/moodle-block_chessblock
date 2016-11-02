@@ -17,7 +17,7 @@
 /**
  * APi for getting game data.
  *
- * Returns json data of game state.
+ * Returns json data of game states.
  *
  * @package block_chessblock
  * @copyright 2016 Global A-Team

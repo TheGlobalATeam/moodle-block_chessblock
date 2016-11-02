@@ -17,7 +17,7 @@
 /**
  * Post game data
  *
- * Returns boolean if post successed.
+ * Returns boolean if post had successed.
  *
  * @package block_chessblock
  * @copyright 2016 Global A-Team

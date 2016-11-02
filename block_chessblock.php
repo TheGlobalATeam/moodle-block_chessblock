@@ -18,7 +18,7 @@
  * The main blockplugin file
  *
  * This file contains the initalizing of the chessblock plugin,
- * mainly defining the html of the view.
+ * mainly defining the Html of the view.
  *
  * @package block_chessblock
  * @copyright 2016 Global A-Team
@@ -91,7 +91,7 @@ class block_chessblock extends block_base {
         $this->content->text .= '<p id="download_pgn_parent"></p>';
         $this->content->text .= '<script
         src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
-        crossorigin="anonymous"></script>';
+		crossorigin="anonymous"></script>';
 
         if (!$this->jsloaded) {
             $this->jsloaded = true;

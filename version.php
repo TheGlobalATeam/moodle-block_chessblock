@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The version file
+ * The Version file
  *
  * For each update, especially database changes, the
  * version needs to be updated to trigger an upgrade when signed in.

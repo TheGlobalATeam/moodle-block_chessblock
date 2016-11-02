@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The access php file
+ * The access PHP file
  *
  * For providing with instance information.
  *

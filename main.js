@@ -28,7 +28,7 @@ $( document ).ready(function() {
         var move = game.move({
             from: source,
             to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity.
+            promotion: 'q' // NOTE: always promote to a Queen for example simplicity.
         });
 
         // Illegal move.

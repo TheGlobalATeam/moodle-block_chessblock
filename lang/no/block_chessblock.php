@@ -17,7 +17,7 @@
 /**
  * Norwegain language strings
  *
- * Contains Norwegian language words
+ * Contains Norwegian Language words
  *
  * @package block_chessblock
  * @copyright 2016 Global A-Team

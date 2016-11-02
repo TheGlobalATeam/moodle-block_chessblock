@@ -17,7 +17,7 @@
 /**
  * English language strings
  *
- * Contains english language words
+ * Contains English language words
  *
  * @package block_chessblock
  * @copyright 2016 Global A-Team
