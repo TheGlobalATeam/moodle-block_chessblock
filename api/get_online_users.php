@@ -32,28 +32,35 @@ require('../../../config.php');
 
 require_login();
 
-$table = 'block_chessblock_games';
+$table = 'user';
 
-$result = $DB->get_records($table, array(
-    'white_user_id' => $USER->id,
-    'black_user_id' => -1
-));
+$sql = '
+    SELECT * FROM mdl_user
+    WHERE id != 1
+    ORDER BY id ASC
+';
 
-header("Content-Type: application/json; charset=UTF-8");
+$result = $DB->get_recordset_sql($sql, array());
 
-$returnobject = array();
+$userList = array();
 
-if (count($result) == 0) {
-    // Nothing found!
-    $returnobject['status'] = false;
-} else {
-    // Returns last object (like ORDERY BY id DESC).
-    $returnobject['status'] = true;
+foreach ($result as $currentUser) {
 
-    $ids = array_keys($result);
-    rsort($ids);
-    $returnobject['gameData'] = $result[$ids[0]];
+    $userList[] = $arrayName = array(
+        'id' => $currentUser->id,
+        'username' => $currentUser->username,
+        'lastaccess' => $currentUser->lastaccess,
+    );
+
 }
 
+$result->close(); // Don't forget to close the recordset!
+
+$returnobject = array();
+$returnobject['status'] = true;
+$returnobject['userList'] = $userList;
+
+
 $jsondata = $returnobject;
+header("Content-Type: application/json; charset=UTF-8");
 echo json_encode($jsondata, JSON_PRETTY_PRINT);
