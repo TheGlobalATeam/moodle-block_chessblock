@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/ 
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -82,9 +82,11 @@ class block_chessblock extends block_base {
         $this->content->text = "";
         $this->content->text .= '<h2>' . get_string('blocktitle', 'block_chessblock') . '</h2>';
         $this->content->text .= '<button id="newChessGame">' . get_string('newgamebutton', 'block_chessblock') . '</button><br>';
-        $this->content->text .= '<button id="loadPrevChessGame">' .
-                                get_string('loadgamebutton', 'block_chessblock') .
-                                '</button><br>';
+        $this->content->text .= '<button id="loadPrevChessGame">' .get_string('loadgamebutton', 'block_chessblock') .'</button><br>';
+        $this->content->text .= '<button id="openMultiplayer">' .get_string('openMultiplayerButton', 'block_chessblock') .'</button><br>';
+
+        $this->content->text .= '<div id="onlineUsersListContainer"></div>';
+
         $this->content->text .= '<div id="board" style="width: 100%"></div>';
         $this->content->text .= '<p>' . get_string('gamestatus', 'block_chessblock') . ':<span id="status"></span></p>';
         $this->content->text .= '<p id="download_fen_parent"></p>';
@@ -96,6 +98,7 @@ class block_chessblock extends block_base {
         if (!$this->jsloaded) {
             $this->jsloaded = true;
             $PAGE->requires->css('/blocks/chessblock/chessboardjs/css/chessboard-0.3.0.css?'.rand());
+            $PAGE->requires->css('/blocks/chessblock/main.css?'.rand());
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chessboard-0.3.0.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chess.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/main.js?'.rand());

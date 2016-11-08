@@ -204,4 +204,63 @@ $( document ).ready(function() {
             }
         );
     });
+
+
+    $('#openMultiplayer').click(function(){
+
+        // $('#loadPrevChessGame').hide();
+        // $('#loadPrevChessGame').hide();
+        // Loading from API.
+        Y.io(
+            M.cfg.wwwroot + "/blocks/chessblock/api/get_online_users.php", {
+                method: "GET",
+                on: {
+                    success: function(io, o, arguments) {
+
+                        var gameData = JSON.parse(o.response);
+                        let dataContent = "<p>Select player to challenge:</p>";
+
+                        for(let i = 0; i < gameData.userList.length; i ++){
+                            //console.dir(gameData.userList[i].id);
+                            dataContent += '<br><button onclick="challengePlayerByID('+gameData.userList[i].id+')">Challenge '+gameData.userList[i].username+'</button>';
+                        }
+
+                        $('#onlineUsersListContainer').html(dataContent);
+
+                    }
+                }
+            }
+        );
+
+
+    });
+
+
+
+
 });
+
+function challengePlayerByID(playerID){ //TDO add username here
+
+    $('#onlineUsersListContainer').html("<p>Loading</p>");
+
+    Y.io(
+        M.cfg.wwwroot + "/blocks/chessblock/api/post_chess_challenge.php", {
+            method: "POST",
+            data: 'challengedUserID=' + playerID ,
+            on: {
+                success: function(io, o, arguments) {
+                    var challengeResponce = JSON.parse(o.response);
+                    console.dir(challengeResponce);
+                    console.log("SAVED!");
+                    $('#onlineUsersListContainer').html("<p>You have challenged "+playerID+"</p>");
+                }
+            }
+        }
+    );
+
+
+
+    console.log("I challenge: " + playerID);
+
+}

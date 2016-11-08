@@ -43,7 +43,9 @@ function xmldb_block_chessblock_upgrade($oldversion) {
     // Loads ddl manager and xmldb classes.
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2016092305) {
+    $dbVersion = 2016110801; //NEEDS to be same as version number in version.php
+
+    if ($oldversion < $dbVersion || true) {
 
         // Drop unused tables.
         $table = new xmldb_table('block_chessblock_positions');
@@ -61,7 +63,12 @@ function xmldb_block_chessblock_upgrade($oldversion) {
             $dbman->drop_table($table);
         }
 
-        // Create new table.
+        $table = new xmldb_table('block_chessblock_challenges');
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        // Create block_chessblock_games table.
         $table = new xmldb_table('block_chessblock_games');
 
         // Adding fields to table block_chessblock_games.
@@ -79,7 +86,26 @@ function xmldb_block_chessblock_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        upgrade_block_savepoint(true, 2016092305, 'chessblock');
+
+        // Create block_chessblock_challenges table.
+        $table = new xmldb_table('block_chessblock_challenges');
+
+        // Adding fields to table block_chessblock_games.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('challenger_user_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('challenged_user_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('challenged_time', XMLDB_TYPE_INTEGER, '20', null, null, null, null);
+
+        // Adding keys to table block_chessblock_games.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        // Conditionally launch create table for block_chessblock_games.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+
+        upgrade_block_savepoint(true, $dbVersion, 'chessblock');
     }
     return $result;
 }

@@ -34,6 +34,7 @@ $string['chessblock:myaddinstance'] = 'Add a new simple chess block to the My Mo
 $string['blocktitle'] = 'Chess';
 $string['newgamebutton'] = 'Start new game';
 $string['loadgamebutton'] = 'Load previous game';
+$string['openMultiplayerButton'] = 'Start multiplayer';
 $string['gamestatus'] = 'Status';
 $string['userid'] = 'User ID';
 
