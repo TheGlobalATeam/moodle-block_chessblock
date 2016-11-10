@@ -102,6 +102,8 @@ class block_chessblock extends block_base {
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chessboard-0.3.0.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chess.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
+			$PAGE->requires->js('/blocks/chessblock/multiplayerNotificatin.js?'.rand());
+
 
             $stringmanager = get_string_manager();
             $strings = $stringmanager->load_component_strings('block_chessblock', current_language());
