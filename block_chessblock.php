@@ -80,20 +80,20 @@ class block_chessblock extends block_base {
 
         $this->content         = new stdClass;
         $this->content->text = "";
-        $this->content->text .= '<h2>' . get_string('blocktitle', 'block_chessblock') . '</h2>';
-        $this->content->text .= '<button id="newChessGame">' . get_string('newgamebutton', 'block_chessblock') . '</button><br>';
-        $this->content->text .= '<button id="loadPrevChessGame">' .get_string('loadgamebutton', 'block_chessblock') .'</button><br>';
-        $this->content->text .= '<button id="openMultiplayer">' .get_string('openMultiplayerButton', 'block_chessblock') .'</button><br>';
 
-        $this->content->text .= '<div id="onlineUsersListContainer"></div>';
-
-        $this->content->text .= '<div id="board" style="width: 100%"></div>';
-        $this->content->text .= '<p>' . get_string('gamestatus', 'block_chessblock') . ':<span id="status"></span></p>';
-        $this->content->text .= '<p id="download_fen_parent"></p>';
-        $this->content->text .= '<p id="download_pgn_parent"></p>';
-        $this->content->text .= '<script
-        src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
-		crossorigin="anonymous"></script>';
+		//load the html file and use the Mustache_Engine as a template engine
+		$mustache = new Mustache_Engine;
+		$htmlFile = file_get_contents('index.html', true);
+		$mustacheParserData = array(
+			'wat' => "lool",
+			'trans_blocktitle' => get_string('blocktitle', 'block_chessblock'),
+			'trans_newgamebutton' => get_string('newgamebutton', 'block_chessblock'),
+			'trans_loadgamebutton' => get_string('loadgamebutton', 'block_chessblock'),
+			'trans_openMultiplayerButton' => get_string('openMultiplayerButton', 'block_chessblock'),
+			'trans_gamestatus' => get_string('gamestatus', 'block_chessblock'),
+		);
+		//do the actuall load!
+		$this->content->text .= $mustache->render($htmlFile, $mustacheParserData);
 
         if (!$this->jsloaded) {
             $this->jsloaded = true;
@@ -112,4 +112,7 @@ class block_chessblock extends block_base {
 
         return $this->content;
     }
+
+
+
 }
