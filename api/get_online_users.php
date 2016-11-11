@@ -37,6 +37,7 @@ $table = 'user';
 $sql = '
     SELECT * FROM mdl_user
     WHERE id != 1
+    AND id != "'.$USER->id.'"
     ORDER BY id ASC
 ';
 

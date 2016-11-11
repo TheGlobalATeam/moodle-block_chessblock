@@ -44,10 +44,15 @@ if (isset($_POST['challengedUserID'])) {
         //TODO check if valid userID
 
         $challengedUserID = $_POST['challengedUserID'];
-
-        //TDO from here
-
         $table = 'block_chessblock_challenges';
+
+        //delete all prev challenges
+        $conditions = array(
+            'challenger_user_id' => $USER->id,
+            'challenged_user_id' => $challengedUserID
+        );
+        $DB->delete_records($table, $conditions);
+
         $record = new stdClass();
         $record->challenger_user_id  = $USER->id;
         $record->challenged_user_id = $challengedUserID;
