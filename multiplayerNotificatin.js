@@ -1,6 +1,11 @@
 var canUseNotifications = false;
 var lastChallengeTime = -1;
 
+var keepLookingForChallenge = true;
+
+
+//CODE FILE FOR THE PLAYER RESIVING THE CHALLENGE
+
 // Let's check if the browser supports notifications
 if (!("Notification" in window)) {
 	console.log("This browser does not support desktop notification");
@@ -22,11 +27,6 @@ if (!("Notification" in window)) {
 	});
 }
 
-if (canUseNotifications) {
-
-	lookForChallenges();
-
-}
 
 function lookForChallenges(){
 
@@ -36,12 +36,16 @@ function lookForChallenges(){
 			on: {
 				success: function(io, o, arguments) {
 					var gameData = JSON.parse(o.response);
-					console.log("responce");
-					console.dir(gameData);
+					//console.log("responce");
+					//console.dir(gameData);
 					if (gameData.status){
 						lastChallengeTime = gameData.challenges[0].challenged_time;
-						console.log("yess!" + lastChallengeTime);
-						addNewNotification(gameData.challenges[0].challenger_user_id)
+						//console.log("yess!" + lastChallengeTime);
+						addNewNotification(gameData.challenges[0].challenger_user_id);
+						enemyPlayerID = gameData.challenges[0].challenger_user_id;
+
+						$('#acceptMultiplayerChallenge').show();
+
 
 					}
 				}
@@ -49,11 +53,18 @@ function lookForChallenges(){
 		}
 	);
 
-	setTimeout(lookForChallenges, 3000);
+	if(keepLookingForChallenge){
+		setTimeout(lookForChallenges, 3000);
+	}
+
 
 }
 
 function addNewNotification(challengerUserID){
+
+	if (!canUseNotifications) {
+		return;
+	}
 
 	var options = {
 			body: "Challenged by userID: "+challengerUserID,
@@ -72,3 +83,45 @@ function addNewNotification(challengerUserID){
 		}
 
 }
+
+
+$( document ).ready(function() {
+
+	$('#acceptMultiplayerChallenge').click(function(){
+
+		keepLookingForChallenge = false;
+
+		Y.io(
+	        M.cfg.wwwroot + "/blocks/chessblock/api/chess_challenge_status.php", {
+	            method: "POST",
+	            data: 'challengerUserID=' + enemyPlayerID + '&challengeResponce=1' ,
+	            on: {
+	                success: function(io, o, arguments) {
+
+	                    var responce = JSON.parse(o.response);
+						// console.dir(responce);
+
+						if(responce.status){
+							// console.log("accept status stored!");
+
+							//start MP
+							// console.log("start MP against "+enemyPlayerID);
+							//found in mainJS. handing controll over
+							startMultiplayerMatch(false);
+
+						}
+
+
+
+	                }
+	            }
+	        }
+	    );
+
+
+
+	});
+
+});
+
+lookForChallenges();

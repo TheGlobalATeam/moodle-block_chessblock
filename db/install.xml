@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/chessblock/db" VERSION="20161108" COMMENT="XMLDB file for Moodle blocks/chessblock"
+<XMLDB PATH="blocks/chessblock/db" VERSION="20161110" COMMENT="XMLDB file for Moodle blocks/chessblock"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -30,6 +30,7 @@
         <FIELD NAME="challenger_user_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of user that creates the challenge"/>
         <FIELD NAME="challenged_user_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of user that resives the challenge"/>
         <FIELD NAME="challenged_time" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="challenged_time, UNIX time"/>
+        <FIELD NAME="challenged_accepts" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="-1" SEQUENCE="false" COMMENT="0 if player delcines and 1 if accepts. -1 means no answer yet"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

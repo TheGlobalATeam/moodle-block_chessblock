@@ -16,3 +16,17 @@
 	width: 100%;
 
 }
+
+#loadingDiv{
+
+	display: none;
+	text-align: center;
+
+}
+
+#acceptMultiplayerChallenge{
+
+	display: none;
+	width: 100%;
+	
+}

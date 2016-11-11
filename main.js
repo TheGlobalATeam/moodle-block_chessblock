@@ -1,5 +1,12 @@
 var language = {};
 
+var challengedUserID = -1;
+var doingMultiplayer = false;
+var enemyPlayerID = -1;
+var isPlayer1 = true;
+
+var keepLookingForChallengeResponce = true;
+
 function loadLanguage(Y, currentLanguage) {
     language = currentLanguage;
 }
@@ -242,7 +249,13 @@ $( document ).ready(function() {
 
 function challengePlayerByID(playerID){ //TDO add username here
 
+    $('#loadingDiv').show();
+	$('#buttonsContainer').hide();
+	$('#gameInfoCointainer').hide();
+
     $('#onlineUsersListContainer').html("<p>Loading</p>");
+
+    challengedUserID = playerID;
 
     Y.io(
         M.cfg.wwwroot + "/blocks/chessblock/api/post_chess_challenge.php", {
@@ -251,9 +264,14 @@ function challengePlayerByID(playerID){ //TDO add username here
             on: {
                 success: function(io, o, arguments) {
                     var challengeResponce = JSON.parse(o.response);
-                    console.dir(challengeResponce);
-                    console.log("SAVED!");
+                    // console.dir(challengeResponce);
+                    // console.log("SAVED!");
                     $('#onlineUsersListContainer').html("<p>You have challenged "+playerID+"</p>");
+
+
+
+                    lookForResponce();
+
                 }
             }
         }
@@ -262,5 +280,52 @@ function challengePlayerByID(playerID){ //TDO add username here
 
 
     console.log("I challenge: " + playerID);
+
+}
+
+
+
+function lookForResponce(){
+
+
+    Y.io(
+		M.cfg.wwwroot + "/blocks/chessblock/api/chess_challenge_status.php?challengedUserID="+challengedUserID, {
+			method: "GET",
+			on: {
+				success: function(io, o, arguments) {
+					var gameData = JSON.parse(o.response);
+					// console.log("responce lookForResponce");
+					// console.dir(gameData);
+					if (gameData.status){
+
+                        if (gameData.challengeAccepted){
+                            keepLookingForChallengeResponce = false;
+                            startMultiplayerMatch(true);
+                        }
+
+					}
+				}
+			}
+		}
+	);
+
+    if(keepLookingForChallengeResponce){
+        setTimeout(lookForResponce, 3000);
+    }
+
+}
+
+
+//also called by multiplayerNotificatin by player 2
+function startMultiplayerMatch(isFirstPlayer){
+
+    isPlayer1 = isFirstPlayer;
+    if(isFirstPlayer){
+        console.log("Starting MP FirstPlayer");
+    }else{
+        console.log("Starting MP SecoundPlayer");
+    }
+
+    doingMultiplayer = true;
 
 }

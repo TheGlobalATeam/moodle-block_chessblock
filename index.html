@@ -1,13 +1,27 @@
 <h2>{{trans_blocktitle}}</h2>
-<button id="newChessGame">{{trans_newgamebutton}}</button><br>
-<button id="loadPrevChessGame">{{trans_loadgamebutton}}</button><br>
-<button id="openMultiplayer">{{trans_openMultiplayerButton}}</button><br>
+
+<div id="buttonsContainer">
+	<button id="newChessGame">{{trans_newgamebutton}}</button><br>
+	<button id="loadPrevChessGame">{{trans_loadgamebutton}}</button><br>
+	<button id="openMultiplayer">{{trans_openMultiplayerButton}}</button><br>
+	<button id="acceptMultiplayerChallenge">Accept Multiplayer Challenge</button><br>
+</div>
+
+
+
+<div id="loadingDiv">
+	<img src="/moodle/blocks/chessblock/loading.gif">
+	<br>
+	<button id="cancelChallengeMP">Cancel (TODO)</button>
+</div>
 
 <div id="onlineUsersListContainer"></div>
 
-<div id="board" style="width: 100%"></div>
-<p>{{trans_gamestatus}}:<span id="status"></span></p>
-<p id="download_fen_parent"></p>
-<p id="download_pgn_parent"></p>
+<div id="gameInfoCointainer">
+	<div id="board" style="width: 100%"></div>
+	<p>{{trans_gamestatus}}:<span id="status"></span></p>
+	<p id="download_fen_parent"></p>
+	<p id="download_pgn_parent"></p>
+</div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>

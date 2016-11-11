@@ -43,7 +43,7 @@ function xmldb_block_chessblock_upgrade($oldversion) {
     // Loads ddl manager and xmldb classes.
     $dbman = $DB->get_manager();
 
-    $dbVersion = 2016110801; //NEEDS to be same as version number in version.php
+    $dbVersion = 2016110802; //NEEDS to be same as version number in version.php
 
     if ($oldversion < $dbVersion || true) {
 
@@ -94,6 +94,7 @@ function xmldb_block_chessblock_upgrade($oldversion) {
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('challenger_user_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         $table->add_field('challenged_user_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('challenged_accepts', XMLDB_TYPE_INTEGER, '1', null, null, null, '-1', 'challenged_time');
         $table->add_field('challenged_time', XMLDB_TYPE_INTEGER, '20', null, null, null, null);
 
         // Adding keys to table block_chessblock_games.
