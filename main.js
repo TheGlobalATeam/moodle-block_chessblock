@@ -4,6 +4,7 @@ var challengedUserID = -1;
 var doingMultiplayer = false;
 var enemyPlayerID = -1;
 var isPlayer1 = true;
+var mpIsMyTyrn = true;
 
 var keepLookingForChallengeResponce = true;
 
@@ -11,15 +12,38 @@ function loadLanguage(Y, currentLanguage) {
     language = currentLanguage;
 }
 
+//make them globally available, somewhat forward declaration
+var onDragStart;
+var onDrop;
+var onSnapEnd;
+var removeHighlight;
+var highlightSquare;
+var onMouseoverSquare;
+var onMouseoutSquare;
+var putDownloadLinks;
+var updateDownloadLinks;
+var makeRandomMove
+var updateStatus;
+var saveGame;
+
+var board;
+var game;
+var statusEl;
+var gameRunning = false;
+
 $( document ).ready(function() {
 
-    var board;
-    var game = new Chess();
-    var statusEl = $('#status');
-    var gameRunning = false;
+    game = new Chess();
+    statusEl = $('#status');
+    gameRunning = false;
 
     // Do not pick up pieces if the game is over only pick up pieces for the side to move.
-    var onDragStart = function(source, piece, position, orientation) {
+    onDragStart = function(source, piece, position, orientation) {
+
+        if(doingMultiplayer && !mpIsMyTyrn){
+            return false;
+        }
+
         // Only white may move, on their turn.
         if (game.in_checkmate() === true ||
             game.in_draw() === true ||
@@ -28,7 +52,7 @@ $( document ).ready(function() {
         }
     };
 
-    var onDrop = function(source, target) {
+    onDrop = function(source, target) {
         removeHighlight();
 
         // See if the move is legal.
@@ -43,6 +67,14 @@ $( document ).ready(function() {
             return 'snapback';
         }
 
+        //my turn over
+        if(doingMultiplayer){
+            mpIsMyTyrn = false;
+        }
+
+        //TODO submit my move to the server!
+        //TODO look for other players move (using timeout)
+
         updateStatus();
         updateDownloadLinks();
         saveGame();
@@ -50,22 +82,22 @@ $( document ).ready(function() {
     };
 
     // Update the board position after the piece snap for castling, en passant, pawn promotion.
-    var onSnapEnd = function() {
+    onSnapEnd = function() {
         board.position(game.fen());
     };
 
-    var removeHighlight = function(square) {
+    removeHighlight = function(square) {
         $('#board .square-55d63').css('background', '');
     }
 
-    var highlightSquare = function(square) {
+    highlightSquare = function(square) {
         var squareElement = $('#board .square-' + square);
         var isSqaureBlack = (squareElement.hasClass('black-3c85d') === true);
         var backgroundColor = (isSqaureBlack) ? '#696969' : '#a9a9a9';
         squareElement.css('background', backgroundColor);
     }
 
-    var onMouseoverSquare = function(square, piece) {
+    onMouseoverSquare = function(square, piece) {
 
         // Get possible moves for this square.
         var moves = game.moves({
@@ -77,6 +109,11 @@ $( document ).ready(function() {
             return;
         }
 
+        //just if my turn
+        if(doingMultiplayer && !mpIsMyTyrn){
+            return false;
+        }
+
         // Highlight hovered square and leagl moves.
         highlightSquare(square);
         for (var i = 0; i < moves.length; ++i) {
@@ -84,11 +121,11 @@ $( document ).ready(function() {
         }
     }
 
-    var onMouseoutSquare = function(square, piece) {
+    onMouseoutSquare = function(square, piece) {
         removeHighlight();
     }
 
-    var putDownloadLinks = function() {
+    putDownloadLinks = function() {
         var fen_link = '<a id="download_fen">' + language['download'] + ' FEN</a>'
         var pgn_link = '<a id="download_pgn">' + language['download'] + ' PGN</a>'
         $('#download_fen_parent').html(fen_link);
@@ -96,7 +133,7 @@ $( document ).ready(function() {
         updateDownloadLinks();
     }
 
-    var updateDownloadLinks = function() {
+    updateDownloadLinks = function() {
         var fen_href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(game.fen());
         var result = '*';
 
@@ -113,7 +150,7 @@ $( document ).ready(function() {
         $('#download_pgn').attr('href', pgn_href).attr('download', 'pgn.pgn');
     }
 
-    var makeRandomMove = function() {
+    makeRandomMove = function() {
         var possibleMoves = game.moves();
 
         // Game over.
@@ -129,7 +166,7 @@ $( document ).ready(function() {
         saveGame();
     };
 
-    var updateStatus = function() {
+    updateStatus = function() {
         var status = '';
         var moveColor = (game.turn() === 'b') ? language['black'] : language['white'];
 
@@ -146,7 +183,7 @@ $( document ).ready(function() {
         statusEl.html(status);
     };
 
-    var saveGame = function(){
+    saveGame = function(){
 
         if(!gameRunning){
             console.log("need to start a game in order to save");
@@ -166,27 +203,12 @@ $( document ).ready(function() {
         );
     }
 
-    var cfg = {
-        draggable: true,
-        position: 'start',
-        onDragStart: onDragStart,
-        onMouseoutSquare: onMouseoutSquare,
-        onMouseoverSquare: onMouseoverSquare,
-        onDrop: onDrop,
-        onSnapEnd: onSnapEnd,
-        pieceTheme: M.cfg.wwwroot + '/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
-    };
+
 
     updateStatus();
 
     $('#newChessGame').click(function(){
-        game = new Chess();
-        board = new ChessBoard('board', cfg);
-        $('#loadPrevChessGame').hide();
-        gameRunning = true;
-        updateStatus();
-        $(window).resize(board.resize);
-        putDownloadLinks();
+        startChessGame();
     });
 
     $('#loadPrevChessGame').click(function(){
@@ -245,13 +267,52 @@ $( document ).ready(function() {
 
 
 
+
+
+
 });
+
+function startChessGame(){
+
+    var chessCfg = {
+        draggable: true,
+        orientation: 'white',
+        position: 'start',
+        onDragStart: onDragStart,
+        onMouseoutSquare: onMouseoutSquare,
+        onMouseoverSquare: onMouseoverSquare,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd,
+        pieceTheme: M.cfg.wwwroot + '/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
+    };
+
+    if(doingMultiplayer){
+
+        if(isPlayer1){
+            chessCfg.orientation = 'white';
+        }else{
+            chessCfg.orientation = 'black';
+        }
+
+    }
+
+    game = new Chess();
+    board = new ChessBoard('board', chessCfg);
+    $('#loadPrevChessGame').hide();
+    gameRunning = true;
+    updateStatus();
+    $(window).resize(board.resize);
+    putDownloadLinks();
+}
+
+
+
 
 function challengePlayerByID(playerID){ //TDO add username here
 
     $('#loadingDiv').show();
-	$('#buttonsContainer').hide();
-	$('#gameInfoCointainer').hide();
+    $('#buttonsContainer').hide();
+    $('#gameInfoCointainer').hide();
 
     $('#onlineUsersListContainer').html("<p>Loading</p>");
 
@@ -289,25 +350,25 @@ function lookForResponce(){
 
 
     Y.io(
-		M.cfg.wwwroot + "/blocks/chessblock/api/chess_challenge_status.php?challengedUserID="+challengedUserID, {
-			method: "GET",
-			on: {
-				success: function(io, o, arguments) {
-					var gameData = JSON.parse(o.response);
-					// console.log("responce lookForResponce");
-					// console.dir(gameData);
-					if (gameData.status){
+        M.cfg.wwwroot + "/blocks/chessblock/api/chess_challenge_status.php?challengedUserID="+challengedUserID, {
+            method: "GET",
+            on: {
+                success: function(io, o, arguments) {
+                    var gameData = JSON.parse(o.response);
+                    // console.log("responce lookForResponce");
+                    // console.dir(gameData);
+                    if (gameData.status){
 
                         if (gameData.challengeAccepted){
                             keepLookingForChallengeResponce = false;
                             startMultiplayerMatch(true);
                         }
 
-					}
-				}
-			}
-		}
-	);
+                    }
+                }
+            }
+        }
+    );
 
     if(keepLookingForChallengeResponce){
         setTimeout(lookForResponce, 3000);
@@ -327,11 +388,22 @@ function startMultiplayerMatch(isFirstPlayer){
 
     isPlayer1 = isFirstPlayer;
     if(isFirstPlayer){
+
+        $('#loadingDiv').hide();
+        $('#buttonsContainer').show();
+        $('#gameInfoCointainer').show();
+
+        $('#onlineUsersListContainer').html("<p>In multiplayer</p>");
+
         console.log("Starting MP FirstPlayer");
     }else{
+        mpIsMyTyrn = false;
         console.log("Starting MP SecoundPlayer");
+
+        //TODO start looking for other players move
     }
 
+    startChessGame();
 
 
 }
