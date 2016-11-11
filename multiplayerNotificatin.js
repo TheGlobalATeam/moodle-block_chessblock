@@ -67,8 +67,8 @@ function addNewNotification(challengerUserID){
 	}
 
 	var options = {
-			body: "Challenged by userID: "+challengerUserID,
-			icon: '/moodle/blocks/chessblock/Chess-Game.png',
+			body: "Challenged by userID: " + challengerUserID,
+			icon: M.cfg.wwwroot + "/blocks/chessblock/Chess-Game.png",
 			tag:  "#LiveToLearn"
 		}
 

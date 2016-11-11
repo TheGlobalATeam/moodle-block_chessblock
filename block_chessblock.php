@@ -81,19 +81,20 @@ class block_chessblock extends block_base {
         $this->content         = new stdClass;
         $this->content->text = "";
 
-		//load the html file and use the Mustache_Engine as a template engine
-		$mustache = new Mustache_Engine;
-		$htmlFile = file_get_contents('index.html', true);
-		$mustacheParserData = array(
-			'wat' => "lool",
-			'trans_blocktitle' => get_string('blocktitle', 'block_chessblock'),
-			'trans_newgamebutton' => get_string('newgamebutton', 'block_chessblock'),
-			'trans_loadgamebutton' => get_string('loadgamebutton', 'block_chessblock'),
-			'trans_openMultiplayerButton' => get_string('openMultiplayerButton', 'block_chessblock'),
-			'trans_gamestatus' => get_string('gamestatus', 'block_chessblock'),
-		);
-		//do the actuall load!
-		$this->content->text .= $mustache->render($htmlFile, $mustacheParserData);
+    //load the html file and use the Mustache_Engine as a template engine
+    $mustache = new Mustache_Engine;
+    $htmlFile = file_get_contents('index.html', true);
+    $mustacheParserData = array(
+      'wat' => "lool",
+      'trans_blocktitle' => get_string('blocktitle', 'block_chessblock'),
+      'trans_newgamebutton' => get_string('newgamebutton', 'block_chessblock'),
+      'trans_loadgamebutton' => get_string('loadgamebutton', 'block_chessblock'),
+      'trans_openMultiplayerButton' => get_string('openMultiplayerButton', 'block_chessblock'),
+      'trans_gamestatus' => get_string('gamestatus', 'block_chessblock'),
+      'loading_gif' => $CFG->wwwroot . '/blocks/chessblock/loading.gif',
+    );
+    //do the actuall load!
+    $this->content->text .= $mustache->render($htmlFile, $mustacheParserData);
 
         if (!$this->jsloaded) {
             $this->jsloaded = true;
@@ -102,7 +103,7 @@ class block_chessblock extends block_base {
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chessboard-0.3.0.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/chessboardjs/js/chess.js?'.rand());
             $PAGE->requires->js('/blocks/chessblock/main.js?'.rand());
-			$PAGE->requires->js('/blocks/chessblock/multiplayerNotificatin.js?'.rand());
+      $PAGE->requires->js('/blocks/chessblock/multiplayerNotificatin.js?'.rand());
 
 
             $stringmanager = get_string_manager();
