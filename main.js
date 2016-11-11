@@ -319,6 +319,12 @@ function lookForResponce(){
 //also called by multiplayerNotificatin by player 2
 function startMultiplayerMatch(isFirstPlayer){
 
+    //safequard against race condition as only the first call will be accepted
+    if(doingMultiplayer){
+        return;
+    }
+    doingMultiplayer = true;
+
     isPlayer1 = isFirstPlayer;
     if(isFirstPlayer){
         console.log("Starting MP FirstPlayer");
@@ -326,6 +332,6 @@ function startMultiplayerMatch(isFirstPlayer){
         console.log("Starting MP SecoundPlayer");
     }
 
-    doingMultiplayer = true;
+
 
 }
