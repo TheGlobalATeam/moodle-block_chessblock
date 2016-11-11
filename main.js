@@ -6,6 +6,8 @@ var enemyPlayerID = -1;
 var isPlayer1 = true;
 var mpIsMyTyrn = true;
 
+var challengeLookRefreshTime = 1000;
+
 var keepLookingForChallengeResponce = true;
 
 function loadLanguage(Y, currentLanguage) {
@@ -44,12 +46,23 @@ $( document ).ready(function() {
             return false;
         }
 
-        // Only white may move, on their turn.
-        if (game.in_checkmate() === true ||
-            game.in_draw() === true ||
-            piece.search(/^b/) !== -1) {
-                return false;
+        if(isPlayer1){
+            // Only white may move, on their turn.
+            if (game.in_checkmate() === true ||
+                game.in_draw() === true ||
+                piece.search(/^b/) !== -1) {
+                    return false;
+            }
+        }else{
+            // Only white may move, on their turn.
+            if (game.in_checkmate() === true ||
+                game.in_draw() === true ||
+                piece.search(/^w/) !== -1) {
+                    return false;
+            }
         }
+
+
     };
 
     onDrop = function(source, target) {
@@ -70,15 +83,19 @@ $( document ).ready(function() {
         //my turn over
         if(doingMultiplayer){
             mpIsMyTyrn = false;
+            //submit my move to the server!
+            saveNewFenMP(game.fen());
         }
 
-        //TODO submit my move to the server!
-        //TODO look for other players move (using timeout)
+
+
 
         updateStatus();
         updateDownloadLinks();
-        saveGame();
-        window.setTimeout(makeRandomMove, 250);
+        if(!doingMultiplayer){
+            saveGame();
+            window.setTimeout(makeRandomMove, 250);
+        }
     };
 
     // Update the board position after the piece snap for castling, en passant, pawn promotion.
@@ -196,7 +213,7 @@ $( document ).ready(function() {
                 data: 'gameFEN=' + game.fen() + '&gamePGN=NOPE',
                 on: {
                     success: function(io, o, arguments) {
-                        console.log("SAVED!");
+                        //console.log("SAVED!");
                     }
                 }
             }
@@ -272,7 +289,7 @@ $( document ).ready(function() {
 
 });
 
-function startChessGame(){
+function startChessGame(usingFen = false){
 
     var chessCfg = {
         draggable: true,
@@ -286,6 +303,11 @@ function startChessGame(){
         pieceTheme: M.cfg.wwwroot + '/blocks/chessblock/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
     };
 
+    if(usingFen != false){
+        console.log("using pos");
+        chessCfg.position = usingFen
+    }
+
     if(doingMultiplayer){
 
         if(isPlayer1){
@@ -294,10 +316,19 @@ function startChessGame(){
             chessCfg.orientation = 'black';
         }
 
+        //debug as not working default both to white
+        chessCfg.orientation = 'white';
+
     }
 
-    game = new Chess();
     board = new ChessBoard('board', chessCfg);
+    //console.log(board.fen());
+    if(usingFen != false){
+        game = new Chess(usingFen);
+    }else{
+        game = new Chess();
+    }
+    //console.log(game.fen());
     $('#loadPrevChessGame').hide();
     gameRunning = true;
     updateStatus();
@@ -317,6 +348,7 @@ function challengePlayerByID(playerID){ //TDO add username here
     $('#onlineUsersListContainer').html("<p>Loading</p>");
 
     challengedUserID = playerID;
+    enemyPlayerID = playerID;
 
     Y.io(
         M.cfg.wwwroot + "/blocks/chessblock/api/post_chess_challenge.php", {
@@ -371,7 +403,7 @@ function lookForResponce(){
     );
 
     if(keepLookingForChallengeResponce){
-        setTimeout(lookForResponce, 3000);
+        setTimeout(lookForResponce, challengeLookRefreshTime);
     }
 
 }
@@ -385,6 +417,7 @@ function startMultiplayerMatch(isFirstPlayer){
         return;
     }
     doingMultiplayer = true;
+    keepLookingForChallenge = false;
 
     isPlayer1 = isFirstPlayer;
     if(isFirstPlayer){
@@ -404,6 +437,71 @@ function startMultiplayerMatch(isFirstPlayer){
     }
 
     startChessGame();
+    lookForOtherPlayersMoves();
 
+
+}
+
+
+function saveNewFenMP(fen){
+
+    var isPlayer1Number = 1;
+    if(!isPlayer1){
+        isPlayer1Number = 0;
+    }
+
+    Y.io(
+        M.cfg.wwwroot + "/blocks/chessblock/api/chess_mp_moves.php?isPlayer1="+isPlayer1Number+"&otherPlayerID="+enemyPlayerID, {
+            method: "POST",
+            data: 'newFen=' + fen,
+            on: {
+                success: function(io, o, arguments) {
+                    //console.log(o.response);
+                    var responce = JSON.parse(o.response);
+                    //console.dir(responce);
+
+                    if(responce.status){
+                        //console.log("SAVED!");
+                    }
+                }
+            }
+        }
+    );
+
+}
+
+function lookForOtherPlayersMoves(){
+
+    var isPlayer1Number = 1;
+    if(!isPlayer1){
+        isPlayer1Number = 0;
+    }
+
+    Y.io(
+        M.cfg.wwwroot + "/blocks/chessblock/api/chess_mp_moves.php?isPlayer1="+isPlayer1Number+"&otherPlayerID="+enemyPlayerID, {
+            method: "GET",
+            on: {
+                success: function(io, o, arguments) {
+                    var returnJson = JSON.parse(o.response);
+                    if (returnJson.status){
+
+                        if(returnJson.gameData.game_fen != game.fen()){
+                            //new fen!
+                            var oldFen = game.fen();
+                            var newFen = returnJson.gameData.game_fen;
+
+                            mpIsMyTyrn = true;
+                            startChessGame(newFen);
+
+                        }
+
+                    }
+                }
+            }
+        }
+    );
+
+
+    setTimeout(lookForOtherPlayersMoves, challengeLookRefreshTime);
 
 }

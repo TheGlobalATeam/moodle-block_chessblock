@@ -60,6 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['challengerUserID']) &
 
     $DB->execute($sql);
 
+    //setup MP block_chessblock_games
+    if($challengeResponce == 1){
+        //default
+        $gamefen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        $gamepgn = "NOPE";
+
+        $table = 'block_chessblock_games';
+        $record = new stdClass();
+        $record->game_fen  = $gamefen;
+        $record->game_pgn = $gamepgn;
+        $record->white_user_id = $challengerUserID;
+        $record->black_user_id = $USER->id;
+        $status = $DB->insert_record($table, $record, false);
+    }
+
     $returnobject['status'] = true;
 
 

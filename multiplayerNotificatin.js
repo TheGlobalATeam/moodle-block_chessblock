@@ -54,7 +54,7 @@ function lookForChallenges(){
 	);
 
 	if(keepLookingForChallenge){
-		setTimeout(lookForChallenges, 3000);
+		setTimeout(lookForChallenges, challengeLookRefreshTime);
 	}
 
 
