@@ -316,8 +316,6 @@ function startChessGame(usingFen = false){
             chessCfg.orientation = 'black';
         }
 
-        //debug as not working default both to white
-        chessCfg.orientation = 'white';
 
     }
 
