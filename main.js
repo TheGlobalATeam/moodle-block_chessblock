@@ -490,6 +490,7 @@ function lookForOtherPlayersMoves(){
 
                             mpIsMyTyrn = true;
                             startChessGame(newFen);
+                            addYourTurnNotification();
 
                         }
 
@@ -501,5 +502,29 @@ function lookForOtherPlayersMoves(){
 
 
     setTimeout(lookForOtherPlayersMoves, challengeLookRefreshTime);
+
+}
+
+function addYourTurnNotification(){
+
+	if (!canUseNotifications) {
+		return;
+	}
+
+	var options = {
+			body: "Your opponent have made a move!",
+			icon: M.cfg.wwwroot + "/blocks/chessblock/Chess-Game.png",
+			tag:  "#LiveToWin"
+		}
+
+		var title = "Your turn!";
+		var notification = new Notification(title, options);
+
+		notification.onclick = function() {
+			notification.close();
+
+			console.log("Clicked!");
+
+		}
 
 }
