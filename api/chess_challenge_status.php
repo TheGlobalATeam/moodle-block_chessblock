@@ -51,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['challengerUserID']) &
     $sql = '
 
         UPDATE mdl_block_chessblock_challenges
-        SET challenged_accepts = "'.$challengeResponce.'"
+        SET challenged_accepts = ?
 
-        WHERE challenger_user_id = "'.$challengerUserID.'"
-        AND challenged_user_id = "'.$USER->id.'"
+        WHERE challenger_user_id = ?
+        AND challenged_user_id = ?
 
     ';
 
-    $DB->execute($sql);
+    $DB->execute($sql, array($challengeResponce, $challengerUserID, $USER->id));
 
     //setup MP block_chessblock_games
     if($challengeResponce == 1){

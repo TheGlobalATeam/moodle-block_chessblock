@@ -79,20 +79,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['newFen']) && $otherPl
 
     //omg no security:
     $newFen = $_POST['newFen'];
-
-
-    //TODO change to proper moodle DB update, now it supports SQL injections!
     $sql = '
 
         UPDATE mdl_block_chessblock_games
-        SET game_fen = "'.$newFen.'"
+        SET game_fen = ?
 
-        WHERE white_user_id = "'.$whiteID.'"
-        AND black_user_id = "'.$blackID.'"
+        WHERE white_user_id = ?
+        AND black_user_id = ?
 
     ';
 
-    $DB->execute($sql);
+    $DB->execute($sql, array($newFen, $whiteID, $blackID));
     $returnobject['status'] = true;
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $otherPlayerID != -1) {
