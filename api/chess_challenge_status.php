@@ -116,6 +116,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['challengerUserID']) &
 
     $result->close(); // Don't forget to close the recordset!
 
+	if($returnobject['challengeAccepted'] === true || $returnobject['challengeDenied'] === true){
+
+		//deleting challenge affter pullig a denied or comfirmed challenge
+		$table = 'block_chessblock_challenges';
+
+		//delete all prev challenges
+		$conditions = array(
+			'challenger_user_id' => $USER->id,
+			'challenged_user_id' => $challengedUserID
+		);
+		$DB->delete_records($table, $conditions);
+
+
+	}
+
+
+
 
 }
 
